@@ -5,4 +5,4 @@ import (
 )
 
 //go:embed sql/users_init.sql
-var kUsersInitSql string
+var sqlUsersInit string

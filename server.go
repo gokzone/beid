@@ -22,7 +22,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 	var err error
 
 	// Load config
-	cfg, err := LoadConfigFrom("config.json")
+	cfg, err := ParseConfigFile("config.json")
 	if err != nil {
 		return nil, fmt.Errorf("load config: %w", err)
 	}
@@ -54,7 +54,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 	}
 
 	// Init db from scripts, which requires idempotent
-	_, err = pool.Exec(ctx, kUsersInitSql)
+	_, err = pool.Exec(ctx, sqlUsersInit)
 	if err != nil {
 		pool.Close()
 		return nil, err

@@ -6,47 +6,45 @@ import (
 	"os"
 )
 
-// Config is the root configuration, bound from config.json.
 type Config struct {
-	Gin      GinConfig      `json:"gin"`
-	Server   ServerConfig   `json:"server"`
-	Postgres PostgresConfig `json:"postgres"`
-	JWT      JWTConfig      `json:"jwt"`
+	Gin struct {
+		Mode string `json:"mode"`
+	} `json:"gin"`
+
+	Server struct {
+		IP   string `json:"ip"`
+		Port int    `json:"port"`
+	} `json:"server"`
+
+	Postgres struct {
+		DSN string `json:"dsn"`
+	} `json:"postgres"`
+
+	JWT struct {
+		Secret string `json:"secret"`
+	} `json:"jwt"`
 }
 
-// GinConfig holds the gin settings.
-type GinConfig struct {
-	Mode string `json:"mode"`
-}
-
-// ServerConfig holds the HTTP server settings.
-type ServerConfig struct {
-	IP   string `json:"ip"`
-	Port int    `json:"port"`
-}
-
-// PostgresConfig holds the PostgreSQL connection settings.
-type PostgresConfig struct {
-	DSN string `json:"dsn"`
-}
-
-type JWTConfig struct {
-	Secret string `json:"secret"`
-}
-
-// LoadConfig from config file
-func LoadConfigFrom(path string) (*Config, error) {
-	raw, err := os.ReadFile(path)
+func ParseConfigFile(cfgFilePath string) (*Config, error) {
+	cfgRawContent, err := os.ReadFile(cfgFilePath)
 	if err != nil {
-		err = fmt.Errorf("read %s: %w", path, err)
+		err = fmt.Errorf("ParseConfigFile \"%s\": %w", cfgFilePath, err)
 		return nil, err
 	}
+	cfg, err := ParseConfigContent(cfgRawContent)
+	if err != nil {
+		err = fmt.Errorf("ParseConfigFile \"%s\": %w", cfgFilePath, err)
+		return nil, err
+	}
+	return cfg, nil
+}
 
+func ParseConfigContent(cfgRawContent []byte) (*Config, error) {
 	var cfg Config
-	err = json.Unmarshal(raw, &cfg)
+	err := json.Unmarshal(cfgRawContent, &cfg)
 	if err != nil {
-		err = fmt.Errorf("parse %s: %w", path, err)
+		err = fmt.Errorf("ParseConfigContent: %w", err)
 		return nil, err
 	}
-	return &cfg, err
+	return &cfg, nil
 }
