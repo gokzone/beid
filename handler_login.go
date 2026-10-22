@@ -19,7 +19,7 @@ func handle_post_user_login(svr *Server) gin.HandlerFunc {
 		var req UserLoginRequest
 		err := ctx.ShouldBindJSON(&req)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid login params"})
 			return
 		}
 

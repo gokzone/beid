@@ -13,8 +13,8 @@ func main() {
 
 	test_router(server) // For test, should remove in release
 
-	server.router.POST("/user/register", handle_post_user_register(server))
-	server.router.POST("/user/login", handle_post_user_login(server))
+	server.router.POST("/users/register", handle_post_user_register(server))
+	server.router.POST("/auth/login", handle_post_user_login(server))
 
 	server.Run()
 }

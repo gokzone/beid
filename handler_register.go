@@ -21,7 +21,7 @@ func handle_post_user_register(svr *Server) gin.HandlerFunc {
 		var req UserRegisterRequest
 		err := ctx.ShouldBindJSON(&req)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid register params"})
 			return
 		}
 
