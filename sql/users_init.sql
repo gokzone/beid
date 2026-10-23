@@ -4,7 +4,7 @@
 -- 注意：gen_random_uuid() 需要 PostgreSQL 13+（更高版本已内置，无需扩展）
 
 CREATE TABLE IF NOT EXISTS users (
-    id            uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+    id            uuid        PRIMARY KEY DEFAULT uuidv7(),
     username      text        NOT NULL UNIQUE,
     email         text        NOT NULL UNIQUE,
     password_hash text        NOT NULL,
